@@ -18,7 +18,7 @@ class OffreFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'=>fake()->jobTitle(),
+            'titre'=>fake()->jobTitle(),
             'description'=>fake()->paragraph(),
             'localisation'=>fake()->city(),
             'type' => fake()->randomElement(['CDI', 'CDD', 'stage']),
