@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Profil;
+use App\Models\Offre;
+
 
 #[Fillable(['name', 'email', 'password','role'])]
 #[Hidden(['password', 'remember_token'])]
@@ -32,5 +34,9 @@ class User extends Authenticatable
     }
     public function profil(){
         return $this->hasOne(Profil::class);
+    }
+    public function offres()
+    {
+        return $this->hasMany(Offre::class);
     }
 }
