@@ -33,4 +33,5 @@ class User extends Authenticatable
     public function profil(){
         return $this->hasOne(Profil::class);
     }
+
 }
