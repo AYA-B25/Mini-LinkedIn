@@ -15,9 +15,17 @@ class CandidatSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)
-            ->has(Profil::factory())
-            ->has(Competence::factory(3))
-            ->create();
+        User::factory(10)->create()->each(function ($user) {
+
+            $profil = Profil::factory()->create([
+                'user_id' => $user->id
+            ]);
+
+            $profil->competences()->attach(
+                Competence::factory(3)->create()->pluck('id'),
+                ['niveau' => 'intermediaire']
+            );
+
+        });
     }
 }
