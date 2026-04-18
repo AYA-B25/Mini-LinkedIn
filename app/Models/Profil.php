@@ -32,6 +32,7 @@ class Profil extends Model
     }
     public function competences()
     {
-        return $this->belongsToMany(Competence::class);
+        return $this->belongsToMany(Competence::class,'competence_profils')
+                    ->withPivot('niveau');
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Profil;
 use App\Models\Offre;
@@ -15,7 +16,7 @@ use App\Models\Offre;
 
 #[Fillable(['name', 'email', 'password','role'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -32,11 +33,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    
     public function profil(){
         return $this->hasOne(Profil::class);
     }
     public function offres()
     {
         return $this->hasMany(Offre::class);
+    }
+
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [
+            'role' => $this->role,
+        ];
     }
 }

@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('competence_profils', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('profil_id');
-            $table->foreignId('competence_id');
-            $table->enum('niveau',['debutant','intermediaire','expert'])->default('debutant');
-            $table->timestamps();
+            $table->foreignId('profil_id')->constrained('profils')->onDelete('cascade');
+            $table->foreignId('competence_id')->constrained('competences')->onDelete('cascade');
+            $table->enum('niveau', ['debutant', 'intermediaire', 'expert']);
+            $table->primary(['profil_id', 'competence_id']);
         });
     }
 
