@@ -13,8 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Profil extends Model
-{   use HasFactory;
+{   
+    use HasFactory;
+    
     protected $fillable = [
+        'user_id',
         'titre',
         'bio',
         'localisation',

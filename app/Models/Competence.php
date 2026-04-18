@@ -8,6 +8,7 @@ use App\Models\Profil;
 class Competence extends Model
 {
     use HasFactory;
+    
     protected $fillable=['nom','categorie'];
 
     public function profils()

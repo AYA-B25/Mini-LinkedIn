@@ -17,7 +17,7 @@ class ProfilController extends Controller
         
         $data = $request->validate([
             'titre' => 'required|string|max:255',
-            'bio' => 'nullable|text',
+            'bio' => 'nullable|string',
             'localisation' => 'nullable|string',
             'disponible' => 'nullable|boolean'
         ]);
@@ -37,6 +37,8 @@ class ProfilController extends Controller
     {
         $profil = $this->getProfil();
 
+        $profil->load('competences');
+        
         return response()->json([
             'profil' => $profil
             ],200);
@@ -54,9 +56,9 @@ class ProfilController extends Controller
 
         $validated_profil = $request->validate([
             'titre' => 'sometimes|string|max:255',
-            'bio' => 'sometimes|text',
+            'bio' => 'sometimes|string',
             'localisation' => 'sometimes|string',
-            'disponible' => 'somtimes|boolean'
+            'disponible' => 'sometimes|boolean'
         ]);
         
         $profil->update($validated_profil);
@@ -77,7 +79,7 @@ class ProfilController extends Controller
 
         $competence = Competence::find($request->competence_id);
 
-        if($profil->competences()->where('competences_id',$competence->id)->exists()){
+        if($profil->competences()->where('competence_id',$competence->id)->exists()){
             return response()->json([
                 'message' => 'Compétence déjà ajouté'
             ],409);
