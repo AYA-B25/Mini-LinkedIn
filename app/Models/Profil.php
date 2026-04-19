@@ -13,8 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Profil extends Model
-{   use HasFactory;
+{   
+    use HasFactory;
+    
     protected $fillable = [
+        'user_id',
         'titre',
         'bio',
         'localisation',
@@ -32,6 +35,7 @@ class Profil extends Model
     }
     public function competences()
     {
-        return $this->belongsToMany(Competence::class);
+        return $this->belongsToMany(Competence::class,'competence_profils')
+                    ->withPivot('niveau');
     }
 }

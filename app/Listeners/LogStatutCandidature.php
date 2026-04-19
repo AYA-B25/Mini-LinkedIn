@@ -3,27 +3,19 @@
 namespace App\Listeners;
 
 use App\Events\StatutCandidatureMis;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
 class LogStatutCandidature
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(StatutCandidatureMis $event): void
     {
-        Log::info('Statut candidature mis à jour', [
-            'candidature' => $event->candidature
+        Log::channel('candidatures')->info('Statut candidature mis à jour', [
+            'candidature_id' => $event->candidature->id,
+            'candidat' => $event->candidature->profil->user->name ?? null,
+            'offre' => $event->candidature->offre->titre ?? null,
+            'ancien_statut' => $event->ancienStatut,
+            'nouveau_statut' => $event->nouveauStatut,
+            'date' => now()
         ]);
     }
 }

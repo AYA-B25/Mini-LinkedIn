@@ -8,10 +8,12 @@ use App\Models\Profil;
 class Competence extends Model
 {
     use HasFactory;
+    
     protected $fillable=['nom','categorie'];
 
     public function profils()
     {
-        return $this->belongsToMany(Profil::class);
+        return $this->belongsToMany(Profil::class, 'competence_profils')
+                    ->withPivot('niveau');
     }
 }

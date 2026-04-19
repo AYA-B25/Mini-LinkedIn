@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'role' => 'candidat',
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => bcrypt('password123'), // mot de passe fixe pour les tests
         ];
     }
     public function admin(): static

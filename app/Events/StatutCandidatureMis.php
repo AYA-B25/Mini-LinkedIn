@@ -2,33 +2,21 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class StatutCandidatureMis
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $candidature;
-    public function __construct($candidature)
+    public $ancienStatut;
+    public $nouveauStatut;
+
+    public function __construct($candidature, $ancienStatut, $nouveauStatut)
     {
         $this->candidature = $candidature;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        $this->ancienStatut = $ancienStatut;
+        $this->nouveauStatut = $nouveauStatut;
     }
 }
