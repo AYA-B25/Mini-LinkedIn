@@ -6,6 +6,7 @@ use App\Models\Candidature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\StatutCandidatureMis;
+use App\Events\CandidatureDeposee;
 
 class CandidatureController extends Controller
 {
@@ -18,7 +19,6 @@ class CandidatureController extends Controller
     public function store(Request $request,$offre_id)
     {
         $request->validate([
-
             'message' => 'required|string'
         ]);
 
@@ -29,6 +29,8 @@ class CandidatureController extends Controller
             'message' => $request->message,
             'statut' => 'en_attente',
         ]);
+
+        event(new CandidatureDeposee($candidature));
 
         return response()->json($candidature);
     }

@@ -11,8 +11,10 @@ use App\Listeners\LogStatutCandidature;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        
 
+        CandidatureDeposee::class => [
+        LogCandidatureDeposee::class,
+        ],
         StatutCandidatureMis::class => [
             LogStatutCandidature::class,
         ],
