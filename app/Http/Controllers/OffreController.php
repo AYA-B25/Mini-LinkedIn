@@ -10,7 +10,7 @@ class OffreController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Offre::query();
+        $query = Offre::where('actif', true);
 
         if ($request->localisation) {
             $query->where('localisation', $request->localisation);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidature;
+use App\Models\Offre;     
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\StatutCandidatureMis;
@@ -34,42 +35,20 @@ class CandidatureController extends Controller
 
         return response()->json($candidature);
     }
+    
 
-    public function show(Candidature $candidature)
+    public function getCandidatures(Offre $offre)
     {
-        if ($candidature->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+        
+        if (auth()->id() !== $offre->user_id) {
+            return response()->json(['message' => 'Accès refusé'], 403);
         }
 
-        return response()->json($candidature);
-    }
+        $candidatures = $offre->candidatures()
+                            ->with(['profil.user', 'profil.competences'])
+                            ->get();
 
-    public function update(Request $request, Candidature $candidature)
-    {
-        if ($candidature->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $request->validate([
-            'message' => 'required|string'
-        ]);
-
-        $candidature->update([
-            'message' => $request->message
-        ]);
-
-        return response()->json($candidature);
-    }
-
-    public function destroy(Candidature $candidature)
-    {
-        if ($candidature->user_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $candidature->delete();
-
-        return response()->json(['message' => 'Deleted']);
+        return response()->json($candidatures);
     }
 
     public function updateStatut(Request $request, Candidature $candidature)
