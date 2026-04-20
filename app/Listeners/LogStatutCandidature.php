@@ -3,19 +3,25 @@
 namespace App\Listeners;
 
 use App\Events\StatutCandidatureMis;
-use Illuminate\Support\Facades\Log;
 
 class LogStatutCandidature
 {
     public function handle(StatutCandidatureMis $event): void
     {
-        Log::channel('candidatures')->info('Statut candidature mis à jour', [
-            'candidature_id' => $event->candidature->id,
-            'candidat' => $event->candidature->profil->user->name ?? null,
-            'offre' => $event->candidature->offre->titre ?? null,
-            'ancien_statut' => $event->ancienStatut,
-            'nouveau_statut' => $event->nouveauStatut,
-            'date' => now()
-        ]);
+        $message = sprintf(
+            "[%s] Candidature #%d mise à jour : %s → %s | candidat: %s | offre: %s\n",
+            now(),
+            $event->candidature->id,
+            $event->ancienStatut,
+            $event->nouveauStatut,
+            $event->candidature->profil->user->name ?? 'N/A',
+            $event->candidature->offre->titre ?? 'N/A'
+        );
+
+        file_put_contents(
+            storage_path('logs/candidatures.log'),
+            $message,
+            FILE_APPEND
+        );
     }
 }
