@@ -19,7 +19,16 @@ class ProfilFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'titre'=> fake()->jobTitle(),
+            'titre'        => fake()->randomElement([
+                'Développeur Full Stack',
+                'Ingénieur Backend Laravel',
+                'Designer UI/UX',
+                'Étudiant en Informatique',
+                'Développeur Frontend React',
+                'Data Scientist Junior',
+                'Développeur Mobile Flutter',
+                'DevOps Engineer',
+            ]),
             'bio' => fake()->paragraph(),
             'localisation' => fake()->city(),
             'disponible' => fake()->boolean(),

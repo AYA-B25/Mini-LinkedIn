@@ -2,23 +2,21 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\CandidatSeeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use Database\Seeders\CandidatSeeder;
+use Database\Seeders\AdminRecruteurSeeder;
+use Database\Seeders\CompetenceSeeder;
 
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $this->call([
+
+            CompetenceSeeder::class,
             CandidatSeeder::class,
+            AdminRecruteurSeeder::class,
         ]);
     }
 }
