@@ -38,8 +38,8 @@ class AuthController extends Controller
         ]);
 
         if(!$token=auth()->attempt($credentials))
-        {    
-            return respoonse()->json([
+        {
+            return response()->json([
                 'message' => 'Email ou  mot de passe incorrect',
 
             ],401);

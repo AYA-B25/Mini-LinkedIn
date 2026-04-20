@@ -15,15 +15,15 @@ class CandidatSeeder extends Seeder
      */
     public function run(): void
     {
-        // 10 candidats avec profil et compétences
+        
         User::factory(10)->create(['role' => 'candidat'])->each(function ($user) {
-            
-            // Créer le profil
+
+
             $profil = Profil::factory()->create(['user_id' => $user->id]);
 
-            // Ajouter 2-3 compétences aléatoires depuis la liste fixe
+
             $competences = Competence::inRandomOrder()->take(rand(2, 3))->get();
-            
+
             foreach ($competences as $competence) {
                 $profil->competences()->attach($competence->id, [
                     'niveau' => fake()->randomElement(['debutant', 'intermediaire', 'expert'])
@@ -31,6 +31,5 @@ class CandidatSeeder extends Seeder
             }
         });
 
-        
     }
 }

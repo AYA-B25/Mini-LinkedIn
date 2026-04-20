@@ -16,7 +16,7 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/auth/me', [AuthController::class,'me']);
 });
 
-Route::middleware(['auth:api','role:candidat'])->group(function () {
+Route::middleware(['auth:api','checkrole:candidat'])->group(function () {
     Route::post('/profil',[ProfilController::class,'store']);
     Route::get('/profil',[ProfilController::class,'show']);
     Route::put('/profil',[ProfilController::class,'update']);
@@ -28,17 +28,23 @@ Route::middleware(['auth:api','role:candidat'])->group(function () {
 Route::get('offres', [OffreController::class, 'index']);
 Route::get('offres/{offre}', [OffreController::class, 'show']);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:api', 'checkrole:recruteur'])->group(function () {
     Route::post('offres', [OffreController::class, 'store']);
     Route::put('offres/{offre}', [OffreController::class, 'update']);
     Route::delete('offres/{offre}', [OffreController::class, 'destroy']);
+    Route::patch('candidatures/{candidature}/statut', [CandidatureController::class, 'updateStatut']);
+});
 
-    Route::apiResource('candidatures', CandidatureController::class);
+Route::middleware(['auth:api', 'checkrole:candidat'])->group(function () {
+    Route::post('offres/{offre}/candidater', [CandidatureController::class, 'store']);
+    Route::get('mes-candidatures', [CandidatureController::class, 'index']);
+    Route::put('candidatures/{candidature}', [CandidatureController::class, 'update']);
+    Route::delete('candidatures/{candidature}', [CandidatureController::class, 'destroy']);
+});
 
-    Route::middleware(['checkrole:admin'])->group(function () {
-        Route::get('admin/users', [AdminController::class, 'users']);
-        Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser']);
-        Route::get('admin/offres', [AdminController::class, 'offres']);
-        Route::patch('admin/offres/{offre}/toggle', [AdminController::class, 'toggleOffre']);
-    });
+Route::middleware(['auth:api', 'checkrole:admin'])->group(function () {
+    Route::get('admin/users', [AdminController::class, 'users']);
+    Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser']);
+    Route::get('admin/offres', [AdminController::class, 'offres']);
+    Route::patch('admin/offres/{offre}/toggle', [AdminController::class, 'toggleOffre']);
 });
